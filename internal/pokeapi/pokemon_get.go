@@ -2,46 +2,27 @@ package pokeapi
 
 import (
 	"encoding/json"
-	"io"
-	"net/http"
 )
 
 func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
-	url := baseURL + "/pokemon/" + pokemonName
+	url := "/pokemon/" + pokemonName
 
-	if val, ok := c.cache.Get(url); ok {
-		pokemonResp := Pokemon{}
-		err := json.Unmarshal(val, &pokemonResp)
+	var pokemonResp Pokemon
+	var err error
+
+	data, ok := c.cache.Get(url)
+	if !ok {
+		data, err = c.makeRequest(url)
 		if err != nil {
-			return Pokemon{}, err
+			return pokemonResp, err
 		}
+	}
 
+	if err := json.Unmarshal(data, &pokemonResp); err != nil {
 		return pokemonResp, err
 	}
 
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return Pokemon{}, err
-	}
-
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return Pokemon{}, err
-	}
-	defer resp.Body.Close()
-
-	dat, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return Pokemon{}, err
-	}
-
-	pokemonResp := Pokemon{}
-	err = json.Unmarshal(dat, &pokemonResp)
-	if err != nil {
-		return Pokemon{}, err
-	}
-
-	c.cache.Add(url, dat)
+	c.cache.Add(url, data)
 
 	return pokemonResp, nil
 }
