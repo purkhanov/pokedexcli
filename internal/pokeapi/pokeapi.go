@@ -7,9 +7,7 @@ import (
 
 const baseURL = "https://pokeapi.co/api/v2"
 
-func (c *Client) makeRequest(urlPath string) ([]byte, error) {
-	url := baseURL + urlPath
-
+func (c *Client) makeRequest(url string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err

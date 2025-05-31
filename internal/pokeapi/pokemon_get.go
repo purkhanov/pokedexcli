@@ -5,7 +5,7 @@ import (
 )
 
 func (c *Client) GetPokemon(pokemonName string) (Pokemon, error) {
-	url := "/pokemon/" + pokemonName
+	url := baseURL + "/pokemon/" + pokemonName
 
 	var pokemonResp Pokemon
 	var err error

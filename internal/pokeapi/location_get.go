@@ -5,7 +5,7 @@ import (
 )
 
 func (c *Client) GetLocation(locationName string) (Location, error) {
-	url := "/location-area/" + locationName
+	url := baseURL + "/location-area/" + locationName
 
 	var locationResp Location
 	var err error
