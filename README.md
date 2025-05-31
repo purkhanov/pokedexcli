@@ -26,9 +26,7 @@
    git clone https://github.com/purkhanov/pokedexcli.git
    cd pokedexcli
    ```
-2. Установите зависимости (уточните для вашего языка — например, для Python):
+2. Запуск:
    ```sh
    go run .
    ```
-
-## Использование
